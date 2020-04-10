@@ -17,7 +17,7 @@ int main()
 	int framebufferWidth = 0;
 	int framebufferHeight = 0;
 
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //glfw 초기화
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); //gl_flase 하면 리사이즈 안됨
@@ -43,10 +43,10 @@ int main()
 		glfwTerminate();
 	}
 
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window)) //glfw가 종료하도록 지시되었는지 확인
 	{
 		//Update Input
-		glfwPollEvents();
+		glfwPollEvents(); // 키보드 입력
 		//update
 
 		//Draw
@@ -57,7 +57,7 @@ int main()
 		//draw
 
 		//end draw
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window); //컬러 버퍼
 		glFlush();
 
 	}
