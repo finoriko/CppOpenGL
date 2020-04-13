@@ -146,7 +146,7 @@ int main()
 	int framebufferWidth = 0;
 	int framebufferHeight = 0;
 
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //glfw 초기화
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); //메이저 버전
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4); // 마이너 버전
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); //gl_flase 하면 리사이즈 안됨
@@ -195,27 +195,53 @@ int main()
 	//MODEL
 
 	//VAO , VBO , EBO
+	//GEN VAO AND BIND
+	GLuint VAO;
+	glCreateVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
 
 	//GEN VBO AND BIND AND SEND DATA
+	GLuint VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
 
 	//GEN EBO AND BIND AND SEND DATA
+	GLuint EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
-	//SET VERTEXATTRIBPOINTERS AND ENABLE
+	//SET VERTEXATTRIBPOINTERS AND ENABLE(Input ASSEMBLY)
+	/*GLuint attribLoc = glGetAttribLocation(core_program, "vertex_position");
+	glVertexAttribPointer(attribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),(GLvoid*)offsetof(Vertex,position));
+	glEnableVertexAttribArray(attribLoc);*/
 
+	//Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
+	glEnableVertexAttribArray(0);
+	//Color
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
+	glEnableVertexAttribArray(1);
+	//Texcoord
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texcoord));
+	glEnableVertexAttribArray(2);
 	//BIND VAO 0
 
-
+	glBindVertexArray(0);
 
 
 
 
 	//MAIN LOOP
-	while (!glfwWindowShouldClose(window)) //glfw가 종료하도록 지시되었는지 확인
+	while (!glfwWindowShouldClose(window))
 	{
 		//Update Input
-		glfwPollEvents(); //키보드입력
+		glfwPollEvents();
 		//update
 		updateInput(window);
 		//Draw
@@ -223,10 +249,20 @@ int main()
 		//clear
 		glClearColor(0.f, 0.f, 0.f, 1.f); // 색 넣기
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //초기화
+
+		//use a program
+		glUseProgram(core_program);
+
+		//Bind vertex array object
+		glBindVertexArray(VAO);
+
 		//draw
+		//glDrawArrays(GL_TRIANGLES,0, nrOfVertices);
+		glDrawElements(GL_TRIANGLES, nrOfVertices, GL_UNSIGNED_INT, 0);
+
 
 		//end draw
-		glfwSwapBuffers(window); //컬러버퍼
+		glfwSwapBuffers(window);
 		glFlush();
 
 	}
