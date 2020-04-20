@@ -16,11 +16,11 @@ Vertex vertices[] =
 	//glm::vec3(-0.5f,0.5f,0.0f),			   glm::vec3(1.0f,0.0f,0.0f),	 glm::vec2(0.0f,1.0f), //위쪽 직각 삼각형
 	//glm::vec3(0.5f,-0.5f,0.0f),		   glm::vec3(0.0f,0.0f,1.0f),	 glm::vec2(1.0f,0.0f),
 	//glm::vec3(0.5f,0.5f,0.0f),			   glm::vec3(1.0f,1.0f,0.0f),	 glm::vec2(0.0f,0.0f),
-	////Position							   //Color				     //Texcoords            //Normal
-	glm::vec3(-0.5f,0.5f,0.0f),			   glm::vec3(1.0f,0.0f,0.0f),	 glm::vec2(0.0f,1.0f),  glm::vec3(0.0f,0.0f,-1.0f), //직각 삼각형
-	glm::vec3(-0.5f,-0.5f,0.0f),		   glm::vec3(0.0f,1.0f,0.0f),	 glm::vec2(0.0f,0.0f),  glm::vec3(0.0f,0.0f,-1.0f),
-	glm::vec3(0.5f,-0.5f,0.0f),			   glm::vec3(0.0f,0.0f,1.0f),	 glm::vec2(1.0f,0.0f),  glm::vec3(0.0f,0.0f,-1.0f),
-	glm::vec3(0.5f,0.5f,0.0f),			   glm::vec3(1.0f,1.0f,0.0f),	 glm::vec2(1.0f,1.0f),  glm::vec3(0.0f,0.0f,-1.0f),
+
+	glm::vec3(-0.5f,0.5f,0.0f),			   glm::vec3(1.0f,0.0f,0.0f),	 glm::vec2(0.0f,1.0f),  //직각 삼각형
+	glm::vec3(-0.5f,-0.5f,0.0f),		   glm::vec3(0.0f,1.0f,0.0f),	 glm::vec2(0.0f,0.0f),
+	glm::vec3(0.5f,-0.5f,0.0f),			   glm::vec3(0.0f,0.0f,1.0f),	 glm::vec2(1.0f,0.0f),
+	glm::vec3(0.5f,0.5f,0.0f),			   glm::vec3(1.0f,1.0f,0.0f),	 glm::vec2(1.0f,1.0f),
 
 };
 unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
@@ -60,7 +60,7 @@ bool loadShaders(GLuint& program) //셰이터 파일 읽기
 
 	if (in_file.is_open())
 	{
-		while (std::getline(in_file, temp)) 
+		while (std::getline(in_file, temp))
 		{
 			src += temp + "\n"; //src에 셰이더 파일 읽어온거 넣기
 		}
@@ -151,7 +151,7 @@ bool loadShaders(GLuint& program) //셰이터 파일 읽기
 	return loadSuccess;
 }
 
-void updateInput(GLFWwindow* window,glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
+void updateInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
 {
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
@@ -174,12 +174,12 @@ void updateInput(GLFWwindow* window,glm::vec3& position, glm::vec3& rotation, gl
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		rotation.y -= 0.1f;
+		rotation.y -= 1.f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		rotation.y += 0.1f;
+		rotation.y += 1.f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
@@ -290,9 +290,6 @@ int main()
 	//Texcoord
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texcoord));
 	glEnableVertexAttribArray(2);
-	//Normal
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texcoord));
-	glEnableVertexAttribArray(3);
 	//BIND VAO 0
 
 	glBindVertexArray(0);
@@ -367,7 +364,7 @@ int main()
 	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 	ModelMatrix = glm::scale(ModelMatrix, scale);
 
-	glm::vec3 camPosition(0.f,0.F,1.F);
+	glm::vec3 camPosition(0.f, 0.F, 1.F);
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
 	glm::vec3 camFront(0.0f, 0.f, -1.f);
 
@@ -379,10 +376,7 @@ int main()
 	float farPlane = 1000.f;
 	glm::mat4 ProjectionMatrix(1.f);
 
-	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight,nearPlane,farPlane );
-
-	//Lights
-	glm::vec3 lightPos0(0.f, 0.f, 1.f);
+	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
 	//init uniforms
 	glUseProgram(core_program);
@@ -390,8 +384,6 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(core_program, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-	glUniform3fv(glGetUniformLocation(core_program, "lightPos0"),1,glm::value_ptr(lightPos0));
 
 	glUseProgram(0);
 
@@ -431,7 +423,7 @@ int main()
 
 
 		glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-		glfwGetFramebufferSize(window,&framebufferWidth,&framebufferHeight);
+		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 
 		ProjectionMatrix = glm::mat4(1.f);
 		ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
