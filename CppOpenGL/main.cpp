@@ -30,9 +30,9 @@ GLuint indices[] =
 	0,1,2,//Triangle1
 	0,2,3,//Triangle2
 };
-unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint); //지수
 
-void updateInput(GLFWwindow* window)
+void updateInput(GLFWwindow* window) //키입력 esc를 누르면 꺼짐
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -40,11 +40,11 @@ void updateInput(GLFWwindow* window)
 	}
 }
 
-void frambuffer_resize_callback(GLFWwindow* window, int fbw, int fbh)
+void frambuffer_resize_callback(GLFWwindow* window, int fbw, int fbh) //사이즈에 따라서 그리는 영역이 바뀜
 {
 	glViewport(0, 0, fbw, fbh);
 }
-bool loadShaders(GLuint& program)
+bool loadShaders(GLuint& program) //셰이터 파일 읽기
 {
 	bool loadSuccess = true;
 	char infolog[512];
@@ -56,13 +56,13 @@ bool loadShaders(GLuint& program)
 	std::ifstream in_file;
 
 	//Vertex
-	in_file.open("vertex_core.glsl");
+	in_file.open("vertex_core.glsl"); //파일 읽기
 
 	if (in_file.is_open())
 	{
-		while (std::getline(in_file, temp))
+		while (std::getline(in_file, temp)) 
 		{
-			src += temp + "\n";
+			src += temp + "\n"; //src에 셰이더 파일 읽어온거 넣기
 		}
 	}
 	else
@@ -70,14 +70,14 @@ bool loadShaders(GLuint& program)
 		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEXT_FILE" << std::endl;
 		loadSuccess = false;
 	}
-	in_file.close();
+	in_file.close(); // 파일닫기
 
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER); //버텍스 셰이더 선언
 	const GLchar* vertSrc = src.c_str();
-	glShaderSource(vertexShader, 1, &vertSrc, NULL);
-	glCompileShader(vertexShader);
+	glShaderSource(vertexShader, 1, &vertSrc, NULL); //셰이더 객체에 추가
+	glCompileShader(vertexShader); //셰이더 컴파일하기
 
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success); //셰이더 파일이 성공적으로 완료되었는지 알수 있다.
 	if (!success)
 	{
 		glGetShaderInfoLog(vertexShader, 512, NULL, infolog);
@@ -91,7 +91,7 @@ bool loadShaders(GLuint& program)
 	src = "";
 	//Fragment
 
-	in_file.open("fragment_core.glsl");
+	in_file.open("fragment_core.glsl"); //프레그먼트 셰이더도 동일
 
 	if (in_file.is_open())
 	{
@@ -113,7 +113,7 @@ bool loadShaders(GLuint& program)
 	glShaderSource(fragmentShader, 1, &fragSrc, NULL);
 	glCompileShader(fragmentShader);
 
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success); //성공여부 알기
 	if (!success)
 	{
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infolog);
