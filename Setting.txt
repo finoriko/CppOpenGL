@@ -1,0 +1,13 @@
+$(SolutionDir)Linking\GLFW\include
+$(SolutionDir)Linking\GLEW\include
+$(SolutionDir)Linking\GLM\include
+$(SolutionDir)Linking\SOIL2\include
+
+opengl32.lib
+glfw3.lib
+glew32.lib
+soil2-debug.lib
+
+$(SolutionDir)Linking\GLFW\lib
+$(SolutionDir)Linking\GLEW\lib
+$(SolutionDir)Linking\SOIL2\lib
