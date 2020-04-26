@@ -44,112 +44,112 @@ void frambuffer_resize_callback(GLFWwindow* window, int fbw, int fbh) //사이즈에
 {
 	glViewport(0, 0, fbw, fbh);
 }
-bool loadShaders(GLuint& program) //셰이터 파일 읽기
-{
-	bool loadSuccess = true;
-	char infolog[512];
-	GLint success;
-
-	std::string temp = "";
-	std::string src = "";
-
-	std::ifstream in_file;
-
-	//Vertex
-	in_file.open("vertex_core.glsl"); //파일 읽기
-
-	if (in_file.is_open())
-	{
-		while (std::getline(in_file, temp)) 
-		{
-			src += temp + "\n"; //src에 셰이더 파일 읽어온거 넣기
-		}
-	}
-	else
-	{
-		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEXT_FILE" << std::endl;
-		loadSuccess = false;
-	}
-	in_file.close(); // 파일닫기
-
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER); //버텍스 셰이더 선언
-	const GLchar* vertSrc = src.c_str();
-	glShaderSource(vertexShader, 1, &vertSrc, NULL); //셰이더 객체에 추가
-	glCompileShader(vertexShader); //셰이더 컴파일하기
-
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success); //셰이더 파일이 성공적으로 완료되었는지 알수 있다.
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infolog);
-		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEXT_FILE" << std::endl;
-
-		std::cout << infolog << std::endl;
-		loadSuccess = false;
-	}
-
-	temp = "";
-	src = "";
-	//Fragment
-
-	in_file.open("fragment_core.glsl"); //프레그먼트 셰이더도 동일
-
-	if (in_file.is_open())
-	{
-		while (std::getline(in_file, temp))
-		{
-			src += temp + "\n";
-		}
-	}
-	else
-	{
-		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
-		loadSuccess = false;
-
-	}
-	in_file.close();
-
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	const GLchar* fragSrc = src.c_str();
-	glShaderSource(fragmentShader, 1, &fragSrc, NULL);
-	glCompileShader(fragmentShader);
-
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success); //성공여부 알기
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infolog);
-		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
-
-		std::cout << infolog << std::endl;
-		loadSuccess = false;
-
-	}
-
-	//Program
-	program = glCreateProgram();
-
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-
-	glLinkProgram(program);
-
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		glGetProgramInfoLog(program, 512, NULL, infolog);
-		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
-
-		std::cout << infolog << std::endl;
-		loadSuccess = false;
-
-	}
-
-	//End
-	glUseProgram(0);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	return loadSuccess;
-}
+//bool loadShaders(GLuint& program) //셰이터 파일 읽기
+//{
+//	bool loadSuccess = true;
+//	char infolog[512];
+//	GLint success;
+//
+//	std::string temp = "";
+//	std::string src = "";
+//
+//	std::ifstream in_file;
+//
+//	//Vertex
+//	in_file.open("vertex_core.glsl"); //파일 읽기
+//
+//	if (in_file.is_open())
+//	{
+//		while (std::getline(in_file, temp)) 
+//		{
+//			src += temp + "\n"; //src에 셰이더 파일 읽어온거 넣기
+//		}
+//	}
+//	else
+//	{
+//		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEXT_FILE" << std::endl;
+//		loadSuccess = false;
+//	}
+//	in_file.close(); // 파일닫기
+//
+//	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER); //버텍스 셰이더 선언
+//	const GLchar* vertSrc = src.c_str();
+//	glShaderSource(vertexShader, 1, &vertSrc, NULL); //셰이더 객체에 추가
+//	glCompileShader(vertexShader); //셰이더 컴파일하기
+//
+//	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success); //셰이더 파일이 성공적으로 완료되었는지 알수 있다.
+//	if (!success)
+//	{
+//		glGetShaderInfoLog(vertexShader, 512, NULL, infolog);
+//		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEXT_FILE" << std::endl;
+//
+//		std::cout << infolog << std::endl;
+//		loadSuccess = false;
+//	}
+//
+//	temp = "";
+//	src = "";
+//	//Fragment
+//
+//	in_file.open("fragment_core.glsl"); //프레그먼트 셰이더도 동일
+//
+//	if (in_file.is_open())
+//	{
+//		while (std::getline(in_file, temp))
+//		{
+//			src += temp + "\n";
+//		}
+//	}
+//	else
+//	{
+//		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
+//		loadSuccess = false;
+//
+//	}
+//	in_file.close();
+//
+//	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+//	const GLchar* fragSrc = src.c_str();
+//	glShaderSource(fragmentShader, 1, &fragSrc, NULL);
+//	glCompileShader(fragmentShader);
+//
+//	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success); //성공여부 알기
+//	if (!success)
+//	{
+//		glGetShaderInfoLog(fragmentShader, 512, NULL, infolog);
+//		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
+//
+//		std::cout << infolog << std::endl;
+//		loadSuccess = false;
+//
+//	}
+//
+//	//Program
+//	program = glCreateProgram();
+//
+//	glAttachShader(program, vertexShader);
+//	glAttachShader(program, fragmentShader);
+//
+//	glLinkProgram(program);
+//
+//	glGetProgramiv(program, GL_LINK_STATUS, &success);
+//
+//	if (!success)
+//	{
+//		glGetProgramInfoLog(program, 512, NULL, infolog);
+//		std::cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE" << std::endl;
+//
+//		std::cout << infolog << std::endl;
+//		loadSuccess = false;
+//
+//	}
+//
+//	//End
+//	glUseProgram(0);
+//	glDeleteShader(vertexShader);
+//	glDeleteShader(fragmentShader);
+//	return loadSuccess;
+//}
 
 void updateInput(GLFWwindow* window,glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
 {
@@ -246,11 +246,12 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//SHADER INIT
-	GLuint core_program;
+	Shader core_program("vertex_core.glsl","fragment_core.glsl");
+	/*GLuint core_program;
 	if (!loadShaders(core_program))
 	{
 		glfwTerminate();
-	}
+	}*/
 
 	//MODEL
 
@@ -385,14 +386,14 @@ int main()
 	glm::vec3 lightPos0(0.f, 0.f, 1.f);
 
 	//init uniforms
-	glUseProgram(core_program);
+	//glUseProgram(core_program);
+	//core_program.use();
+	core_program.setMat4fv(ModelMatrix, "ModelMatrix");
+	core_program.setMat4fv(ViewMatrix, "ViewMatrix");
+	core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
 
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-	glUniform3fv(glGetUniformLocation(core_program, "lightPos0"), 1, glm::value_ptr(lightPos0));
-	glUniform3fv(glGetUniformLocation(core_program, "cameraPos"),1,glm::value_ptr(camPosition));
+	core_program.setVec3f(lightPos0, "lightPos0");
+	core_program.setVec3f(camPosition, "cameraPos");
 
 	glUseProgram(0);
 
@@ -413,11 +414,9 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //초기화
 
 		//use a program
-		glUseProgram(core_program);
-
-		//update uniforms
-		glUniform1i(glGetUniformLocation(core_program, "texture0"), 0);
-		glUniform1i(glGetUniformLocation(core_program, "texture1"), 1);
+		//glUseProgram(core_program);
+		core_program.set1i(0, "texture0");
+		core_program.set1i(1, "texture1");
 
 		//position.z -= 0.01f;
 		//rotation.y += 2.f;
@@ -430,14 +429,18 @@ int main()
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, scale);
 
+		core_program.setMat4fv(ModelMatrix, "ModelMatrix");
 
-		glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
+		//glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 		glfwGetFramebufferSize(window,&framebufferWidth,&framebufferHeight);
 
 		ProjectionMatrix = glm::mat4(1.f);
 		ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
-		glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+		core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+		//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+
+		core_program.use();
 
 		//Activate texture
 		glActiveTexture(GL_TEXTURE0);
@@ -466,8 +469,7 @@ int main()
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	//Delete program
-	glDeleteProgram(core_program);
+
 
 	//Delete VAO and Buffers
 
