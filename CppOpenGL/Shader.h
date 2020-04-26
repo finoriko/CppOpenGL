@@ -72,6 +72,13 @@ private:
 
 	void linkProgram(GLuint vertexShader, GLuint geometryShader, GLuint fragmentShader)
 	{
+		char infolog[512];
+		GLint success;
+
+		this->id = glCreateProgram();
+
+		glAttachShader(this->id, vertexShader);
+
 
 	}
 
