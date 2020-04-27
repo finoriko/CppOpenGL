@@ -117,7 +117,7 @@ public:
 		{
 			geometryShader = loadShader(GL_GEOMETRY_SHADER, geometryFile);
 		}
-		fragmentShader = loadShader(GL_GEOMETRY_SHADER, fragmentFile);
+		fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentFile);
 		this->linkProgram(vertexShader, geometryShader, fragmentShader);
 
 		glDeleteShader(vertexShader);
