@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial7_LightingFirst", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial8_ShaderClass", "Tutorial8_ShaderClass\Tutorial8_ShaderClass.vcxproj", "{BF69433C-50D6-4314-99CA-78370258E3C0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial9_TextureClass", "Tutorial9_TextureClass\Tutorial9_TextureClass.vcxproj", "{FD44822F-15EB-4989-B23D-79A39F29067F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{BF69433C-50D6-4314-99CA-78370258E3C0}.Release|x64.Build.0 = Release|x64
 		{BF69433C-50D6-4314-99CA-78370258E3C0}.Release|x86.ActiveCfg = Release|Win32
 		{BF69433C-50D6-4314-99CA-78370258E3C0}.Release|x86.Build.0 = Release|Win32
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Debug|x64.ActiveCfg = Debug|x64
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Debug|x64.Build.0 = Debug|x64
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Debug|x86.Build.0 = Debug|Win32
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Release|x64.ActiveCfg = Release|x64
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Release|x64.Build.0 = Release|x64
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Release|x86.ActiveCfg = Release|Win32
+		{FD44822F-15EB-4989-B23D-79A39F29067F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
