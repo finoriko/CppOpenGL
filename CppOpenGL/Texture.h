@@ -12,7 +12,8 @@ private:
 	GLuint id;
 	int width;
 	int height;
-
+	unsigned int type;
+	GLint textureUnit;
 public:
 	Texture(const char* fileName,GLenum type)
 	{
@@ -57,6 +58,11 @@ public:
 	{
 		glActiveTexture(GL_TEXTURE0 + texture_unit);
 		glBindTexture(type, this->id);
+	}
+	void unbind(GLenum type)
+	{
+		glActiveTexture(0);
+		glBindTexture(type, 0);
 	}
 
 };
