@@ -32,7 +32,7 @@ void main()
 	vec3 lightToPosDirVec = normalize(lightPos0 - vs_position);
 	vec3 reflectDirVec = normalize(reflect(lightToPosDirVec,normalize(vs_normal)));
 	vec3 posToViewDirVec = normalize(vs_position - cameraPos);
-	float specularConstant = pow(max(dot(posToViewDirVec,reflectDirVec),0), 100);
+	float specularConstant = pow(max(dot(posToViewDirVec,reflectDirVec),0), 35);
 	vec3 specualrFinal =vec3(1.f,1.f,1.f) * specularConstant;
 
 	//Attenuation
@@ -40,6 +40,6 @@ void main()
 	//Final light
 
 	fs_color = 
-	texture(texture0,vs_texcoord) * vec4(vs_color,1.f)
+	texture(texture1,vs_texcoord) * vec4(vs_color,1.f)
 	* (vec4(ambientLight,1.f) + vec4(diffuseFinal,1.f) + vec4(specualrFinal,1.f));
 }

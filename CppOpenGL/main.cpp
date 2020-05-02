@@ -298,11 +298,11 @@ int main()
 
 	glBindVertexArray(0);
 
-	Texture texture_0("Images/pusheen.png", GL_TEXTURE_2D);
+	Texture texture_0("Images/pusheen.png", GL_TEXTURE_2D,0);
 
 
 	//Texture 1
-	Texture texture_1("Images/container.png",GL_TEXTURE_2D);
+	Texture texture_1("Images/container.png",GL_TEXTURE_2D,1);
 	
 	glm::vec3 position(0.f);
 	glm::vec3 rotation(0.f);
@@ -363,8 +363,8 @@ int main()
 
 		//use a program
 		//glUseProgram(core_program);
-		core_program.set1i(0, "texture0");
-		core_program.set1i(1, "texture1");
+		core_program.set1i(texture_0.getTextureUnit(), "texture0");
+		core_program.set1i(texture_1.getTextureUnit(), "texture1");
 
 		//position.z -= 0.01f;
 		//rotation.y += 2.f;
@@ -393,8 +393,8 @@ int main()
 		//Activate texture
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture0);*/
-		texture_0.bind(0, GL_TEXTURE_2D);
-		texture_1.bind(1, GL_TEXTURE_2D);
+		texture_0.bind();
+		texture_1.bind();
 		//Bind vertex array object
 		glBindVertexArray(VAO);
 
