@@ -174,12 +174,12 @@ void updateInput(GLFWwindow* window,glm::vec3& position, glm::vec3& rotation, gl
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		rotation.y -= 0.1f;
+		rotation.y -= 0.5f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		rotation.y += 0.1f;
+		rotation.y += 0.5f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
@@ -304,6 +304,9 @@ int main()
 	//Texture 1
 	Texture texture_1("Images/container.png",GL_TEXTURE_2D,1);
 	
+	//Material 0
+	Material material0(glm::vec3(0.1f), glm::vec3(1.f),glm::vec3(2.f), texture_0.getTextureUnit(), texture_1.getTextureUnit());
+
 	glm::vec3 position(0.f);
 	glm::vec3 rotation(0.f);
 	glm::vec3 scale(1.f);
@@ -366,6 +369,7 @@ int main()
 		core_program.set1i(texture_0.getTextureUnit(), "texture0");
 		core_program.set1i(texture_1.getTextureUnit(), "texture1");
 
+		material0.sendToShader(core_program);
 		//position.z -= 0.01f;
 		//rotation.y += 2.f;
 
