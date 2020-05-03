@@ -174,12 +174,12 @@ void updateInput(GLFWwindow* window,glm::vec3& position, glm::vec3& rotation, gl
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		rotation.y -= 0.5f;
+		rotation.y -= 1.f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		rotation.y += 0.5f;
+		rotation.y += 1.f;
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
@@ -319,9 +319,9 @@ int main()
 	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 	ModelMatrix = glm::scale(ModelMatrix, scale);
 
-	glm::vec3 camPosition(0.f,0.F,1.F);
+	glm::vec3 camPosition(0.f,0.f,1.f);
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
-	glm::vec3 camFront(0.0f, 0.f, -1.f);
+	glm::vec3 camFront(0.f, 0.f, -1.f);
 
 	glm::mat4 ViewMatrix(1.f);
 	ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);

@@ -254,7 +254,7 @@ int main()
 	//Texture 0
 	int image_width = 0;
 	int image_height = 0;
-	unsigned char* image = SOIL_load_image("Images/okami.png", &image_width, &image_height, NULL, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("Images/pusheen.png", &image_width, &image_height, NULL, SOIL_LOAD_RGBA);
 
 
 	GLuint texture0;
@@ -283,7 +283,7 @@ int main()
 	//Texture 1
 	int image_width1 = 0;
 	int image_height1 = 0;
-	unsigned char* image1 = SOIL_load_image("Images/wood.png", &image_width1, &image_height1, NULL, SOIL_LOAD_RGBA);
+	unsigned char* image1 = SOIL_load_image("Images/container.png", &image_width1, &image_height1, NULL, SOIL_LOAD_RGBA);
 
 
 	GLuint texture1;
@@ -345,7 +345,7 @@ int main()
 		//Move ,rotate and scale
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, 0.f));
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(2.f), glm::vec3(0.f, 1.f, 0.f));
+		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.01f));
 		glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
