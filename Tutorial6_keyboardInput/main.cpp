@@ -364,7 +364,7 @@ int main()
 	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 	ModelMatrix = glm::scale(ModelMatrix, scale);
 
-	glm::vec3 camPosition(0.f, 0.F, 1.F);
+	glm::vec3 camPosition(0.f, 0.f, 1.f);
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
 	glm::vec3 camFront(0.0f, 0.f, -1.f);
 
@@ -372,7 +372,7 @@ int main()
 	ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
 
 	float fov = 90.f;
-	float nearPlane = 01.f;
+	float nearPlane = 0.1f;
 	float farPlane = 1000.f;
 	glm::mat4 ProjectionMatrix(1.f);
 

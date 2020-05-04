@@ -375,7 +375,7 @@ int main()
 	ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
 
 	float fov = 90.f;
-	float nearPlane = 01.f;
+	float nearPlane = 0.1f;
 	float farPlane = 1000.f;
 	glm::mat4 ProjectionMatrix(1.f);
 
