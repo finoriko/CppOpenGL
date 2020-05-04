@@ -14,7 +14,7 @@ void main()
 {
 	vs_position = vec4(ModelMatrix *vec4(vertex_position,1.f)).xyz;
 	vs_color = vertex_color;
-	vs_texcoord = vec2(vertex_texcoord.x, vertex_texcoord.y * -1f);
+	vs_texcoord = vec2(vertex_texcoord.x, vertex_texcoord.y * -1.f);
 	
 	gl_Position = ModelMatrix *vec4(vertex_position,1.f);
 }
