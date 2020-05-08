@@ -11,3 +11,5 @@ soil2-debug.lib
 $(SolutionDir)Linking\GLFW\lib
 $(SolutionDir)Linking\GLEW\lib
 $(SolutionDir)Linking\SOIL2\lib
+
+C/C++ 준수모드->아니요
