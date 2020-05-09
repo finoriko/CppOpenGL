@@ -114,14 +114,14 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//SHADER INIT
 	Shader core_program("vertex_core.glsl","fragment_core.glsl");
 	
 	//Model Mesh
-	Mesh test(vertices, nrOfVertices, indices, nrOfIndices,
+	Mesh test(&Triangle(),
 		glm::vec3(0.f),
 		glm::vec3(0.f),
 		glm::vec3(1.f)
