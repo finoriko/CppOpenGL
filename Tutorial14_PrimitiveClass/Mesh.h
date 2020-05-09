@@ -3,6 +3,7 @@
 #include<vector>
 
 #include"Vertex.h"
+#include"Primitives.h"
 #include"Shader.h"
 #include"Texture.h"
 #include"Material.h"
@@ -23,7 +24,51 @@ private:
 	glm::mat4 ModelMatrix;
 
 
+	void initVAO(Primitive* primitive)
+	{
+		//Set variables
+		this->nrOfVertices = primitive->getNrOfVertices();
+		this->nrOfIndices = primitive->getNrOfIndices();
 
+		//Create VAO
+		glCreateVertexArrays(1, &this->VAO);
+		glBindVertexArray(this->VAO);
+
+
+		//GEN VBO AND BIND AND SEND DATA
+		glGenBuffers(1, &this->VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+		glBufferData(GL_ARRAY_BUFFER, this->nrOfVertices * sizeof(Vertex), primitive->getVertices(), GL_STATIC_DRAW);
+
+
+
+		//GEN EBO AND BIND AND SEND DATA
+		glGenBuffers(1, &this->EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->nrOfIndices * sizeof(GLuint), primitive->getIndices(), GL_STATIC_DRAW);
+
+
+		//SET VERTEXATTRIBPOINTERS AND ENABLE(Input ASSEMBLY)
+		/*GLuint attribLoc = glGetAttribLocation(core_program, "vertex_position");
+		glVertexAttribPointer(attribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),(GLvoid*)offsetof(Vertex,position));
+		glEnableVertexAttribArray(attribLoc);*/
+
+		//Position
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
+		glEnableVertexAttribArray(0);
+		//Color
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
+		glEnableVertexAttribArray(1);
+		//Texcoord
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texcoord));
+		glEnableVertexAttribArray(2);
+		//Normal
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+		glEnableVertexAttribArray(3);
+		//BIND VAO 0
+
+		glBindVertexArray(0);
+	}
 
 	void initVAO(Vertex* vertexArray,
 		const unsigned& nrOfVertices,
@@ -106,6 +151,21 @@ public:
 		this->initVAO(vertexArray, nrOfVertices, indexArray, nrOfIndices);
 		this->updateModelMatrix();
 	}
+
+	Mesh(
+		Primitive* primitive,
+		glm::vec3 position = glm::vec3(0.f),
+		glm::vec3 rotation = glm::vec3(0.f),
+		glm::vec3 scale = glm::vec3(1.f))
+	{
+		this->position = position;
+		this->rotation = rotation;
+		this->scale = scale;
+
+		this->initVAO(primitive);
+		this->updateModelMatrix();
+	}
+
 	~Mesh()
 	{
 		glDeleteVertexArrays(1, &this->VAO);

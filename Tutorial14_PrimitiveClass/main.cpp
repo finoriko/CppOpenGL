@@ -121,7 +121,7 @@ int main()
 	Shader core_program("vertex_core.glsl","fragment_core.glsl");
 	
 	//Model Mesh
-	Mesh test(vertices, nrOfVertices, indices, nrOfIndices,
+	Mesh test(&Quad(),
 		glm::vec3(0.f),
 		glm::vec3(0.f),
 		glm::vec3(1.f)
