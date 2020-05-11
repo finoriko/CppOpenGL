@@ -66,34 +66,50 @@ void updateInput(GLFWwindow* window,Mesh &mesh)
 	}
 }
 
-int main()
+GLFWwindow* createWindow(
+	const char* title,
+	const int width, const int height,
+	int& fbwidth, int& fbHeight,
+	const int GLmajorver,const int GLminorVer,
+	bool resizable)
 {
-	//Init GLFW
-	glfwInit();
-
-	//Create Window
-	const int WINDOW_WIDTH = 640;
-	const int WINDOW_HEIGHT = 480;
-	int framebufferWidth = 0;
-	int framebufferHeight = 0;
 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); //메이저 버전
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4); // 마이너 버전
-	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); //gl_flase 하면 리사이즈 안됨
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GLmajorver); //메이저 버전
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GLminorVer); // 마이너 버전
+	glfwWindowHint(GLFW_RESIZABLE, resizable); //gl_flase 하면 리사이즈 안됨
 
-	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "CppOpenGL", NULL, NULL); //윈도우 크기와 창 이름
+	GLFWwindow* window = glfwCreateWindow(width, height, "CppOpenGL", NULL, NULL); //윈도우 크기와 창 이름
 
-	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+	glfwGetFramebufferSize(window, &fbwidth, &fbHeight);
 	glfwSetFramebufferSizeCallback(window, frambuffer_resize_callback); //크기 변경을 해주는 콜백 크기에 따라 프레임 버퍼도 다르게 해준다
 
 	//glViewport(0, 0, framebufferWidth, framebufferHeight);
 
 	glfwMakeContextCurrent(window);
 
+	return window;
+}
+
+
+int main()
+{
+	//Init GLFW
+	glfwInit();
+
+
+	const int GLmajorVersion = 4;
+	const int GLminorVersion = 4;
+	//Create Window
+	const int WINDOW_WIDTH = 640;
+	const int WINDOW_HEIGHT = 480;
+	int framebufferWidth = WINDOW_WIDTH;
+	int framebufferHeight = WINDOW_HEIGHT;
+
+
 
 	//init glew(needs window and opengl context
-
+	GLFWwindow* window = createWindow("CppOpenGL",WINDOW_WIDTH,WINDOW_HEIGHT,framebufferWidth,framebufferHeight, GLmajorVersion, GLminorVersion,false);
 	glewExperimental = GL_TRUE;
 
 	//Error
@@ -118,7 +134,7 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//SHADER INIT
-	Shader core_program("vertex_core.glsl","fragment_core.glsl");
+	Shader core_program(GLmajorVersion,GLminorVersion,"vertex_core.glsl","fragment_core.glsl");
 	
 	//Model Mesh
 	Mesh test(&Quad(),
