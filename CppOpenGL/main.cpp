@@ -1,4 +1,4 @@
-#include "libs.h"
+#include "Game.h"
 
 Vertex vertices[] =
 {
