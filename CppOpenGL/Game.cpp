@@ -40,6 +40,35 @@ void Game::initWindow(
 	glfwMakeContextCurrent(this->window); //IMPORTANT!!
 }
 
+void Game::initGLEW()
+{
+	glewExperimental = GL_TRUE;
+
+	//Error
+	if (glewInit() != GLEW_OK)
+	{
+		std::cout << "ERROR::MAIN.CPP::GLEW_INIT_FAILED" << "\n";
+		glfwTerminate();
+	}
+}
+
+void Game::initOpenGLOptions()
+{
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	//Input
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 
 
 //Constructors / Destructors
@@ -64,6 +93,8 @@ Game::Game(
 
 	this->initGLFW();
 	this->initWindow(title, resizable);
+	this->initGLEW();
+	this->initOpenGLOptions();
 	
 }
 
@@ -73,6 +104,27 @@ Game::~Game()
 	glfwTerminate();
 
 	
+}
+int Game::getWindowShouldClose()
+{
+	return glfwWindowShouldClose(this->window);
+}
+//Modifier
+void Game::setWindowShouldClose()
+{
+	glfwSetWindowShouldClose(this->window, GLFW_TRUE);
+}
+//Functions
+
+
+
+
+void Game::update()
+{
+}
+
+void Game::render()
+{
 }
 
 

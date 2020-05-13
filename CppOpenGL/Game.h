@@ -27,6 +27,8 @@ private:
 		const char* title,
 		bool resizable
 	);
+	void initGLEW();
+	void initOpenGLOptions();
 	
 	//Static variables
 
@@ -39,8 +41,15 @@ public:
 		bool resizable
 	);
 	virtual ~Game();
-
+	//Accessors
+	int getWindowShouldClose();
+	//Modifiers
+	void setWindowShouldClose();
 	
+
+	//Functions
+	void update();
+	void render();
 	
 
 	//Static functions
