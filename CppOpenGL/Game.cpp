@@ -69,7 +69,19 @@ void Game::initOpenGLOptions()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+void Game::initMatrices()
+{
+	this->ViewMatrix = glm::mat4(1.f);
+	this->ViewMatrix = glm::lookAt(this->camPosition, this->camPosition + this->camFront, this->worldUp);
 
+	this->ProjectionMatrix = glm::mat4(1.f);
+	this->ProjectionMatrix = glm::perspective(
+		glm::radians(this->fov),
+		static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
+		this->nearPlane,
+		this->farPlane
+	);
+}
 
 //Constructors / Destructors
 Game::Game(
@@ -89,13 +101,31 @@ Game::Game(
 	this->framebufferWidth = this->WINDOW_WIDTH;
 	this->framebufferHeight = this->WINDOW_HEIGHT;
 
-	
+	this->camPosition = glm::vec3(0.f, 0.f, 1.f);
+	this->worldUp = glm::vec3(0.f, 1.f, 0.f);
+	this->camFront = glm::vec3(0.f, 0.f, -1.f);
+
+	this->ViewMatrix = glm::mat4(1.f);
+	this->ViewMatrix = glm::lookAt(this->camPosition, this->camPosition + this->camFront, this->worldUp);
+
+	this->fov = 90.f;
+	this->nearPlane = 0.1f;
+	this->farPlane = 1000.f;
+
+	this->ProjectionMatrix = glm::mat4(1.f);
+	this->ProjectionMatrix = glm::perspective(
+		glm::radians(this->fov),
+		static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
+		this->nearPlane,
+		this->farPlane
+	);
 
 	this->initGLFW();
 	this->initWindow(title, resizable);
 	this->initGLEW();
 	this->initOpenGLOptions();
-	
+
+	this->initMatrices();
 }
 
 Game::~Game()
@@ -121,10 +151,36 @@ void Game::setWindowShouldClose()
 
 void Game::update()
 {
+	//Update Input
+	glfwPollEvents();
 }
 
 void Game::render()
 {
+	//Draw
+
+	//clear
+	glClearColor(0.f, 0.f, 0.f, 1.f); // 색 넣기
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //초기화
+
+	//use a program
+
+	//update framebuffer size and projection matrix
+
+	//use a program
+
+	//Activate texture
+
+	//draw
+
+	//end draw
+	glfwSwapBuffers(window);
+	glFlush();
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glActiveTexture(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
