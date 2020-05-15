@@ -103,7 +103,7 @@ void Game::initTextures()
 void Game::initMaterials()
 {
 	this->materials.push_back(new Material(glm::vec3(0.1f), glm::vec3(1.f), glm::vec3(1.f),
-		this->textures[TEX_PUSHEEN0]->getTextureUnit(), this->textures[TEX_CONTAINER1]->getTextureUnit()));
+		0, 1));
 }
 
 void Game::initMeshes()
@@ -128,6 +128,28 @@ void Game::initUniforms()
 	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(*this->lights[0], "lightPos0");
 	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->camPosition, "cameraPos");
 }
+void Game::updateUniforms()
+{
+	//Update view matrix (camera)
+	this->ViewMatrix = this->camera.getViewMatrix();
+
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(this->ViewMatrix, "ViewMatrix");
+	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->camera.getPosition(), "cameraPos");
+	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(*this->lights[0], "lightPos0");
+
+	//Update framebuffer size and projection matrix
+	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
+
+	this->ProjectionMatrix = glm::perspective(
+		glm::radians(this->fov),
+		static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
+		this->nearPlane,
+		this->farPlane
+	);
+
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(this->ProjectionMatrix, "ProjectionMatrix");
+}
+
 //Constructors / Destructors
 Game::Game(
 	const char* title,
@@ -232,8 +254,8 @@ void Game::render()
 
 	//use a program
 	//glUseProgram(core_program);
-	this->shaders[SHADER_CORE_PROGRAM]->set1i(this->textures[TEX_PUSHEEN0]->getTextureUnit(), "texture0");
-	this->shaders[SHADER_CORE_PROGRAM]->set1i(this->textures[TEX_CONTAINER1]->getTextureUnit(), "texture1");
+	this->shaders[SHADER_CORE_PROGRAM]->set1i(0, "texture0");
+	this->shaders[SHADER_CORE_PROGRAM]->set1i(1, "texture1");
 	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
 
 	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
@@ -273,3 +295,46 @@ void Game::framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH)
 {
 	glViewport(0, 0, fbW, fbH);
 };
+void updateInput(GLFWwindow* window) //Å°ÀÔ·Â esc¸¦ ´©¸£¸é ²¨Áü
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+}
+
+void updateInput(GLFWwindow* window, Mesh& mesh)
+{
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(0.f, 0.f, -0.01f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(0.f, 0.f, 0.01f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(-0.01f, 0.f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(0.01f, 0.f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		mesh.rotate(glm::vec3(0.f, -1.f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		mesh.rotate(glm::vec3(0.f, 1.f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+	{
+		mesh.scaleUp(glm::vec3(1.f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+	{
+		mesh.scaleUp(glm::vec3(-1.f));
+	}
+}

@@ -1,9 +1,11 @@
 #pragma once
+
 #include<iostream>
 #include<string>
 
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
+
 #include<SOIL2.h>
 
 class Texture
@@ -13,15 +15,14 @@ private:
 	int width;
 	int height;
 	unsigned int type;
-	GLint textureUnit;
+
 public:
-	Texture(const char* fileName,GLenum type,GLint texture_unit)
+
+	Texture(const char* fileName, GLenum type)
 	{
 		this->type = type;
-		this->textureUnit = texture_unit;
-		//Texture 1
-		unsigned char* image = SOIL_load_image(fileName, &this->width, &this->height, NULL, SOIL_LOAD_RGBA);
 
+		unsigned char* image = SOIL_load_image(fileName, &this->width, &this->height, NULL, SOIL_LOAD_RGBA);
 
 		glGenTextures(1, &this->id);
 		glBindTexture(type, this->id);
@@ -38,7 +39,7 @@ public:
 		}
 		else
 		{
-			std::cout << "ERROR::TEXTURE::TEXTURE_LOADING_FAILED" << std::endl;
+			std::cout << "ERROR::TEXTURE::TEXTURE_LOADING_FAILED: " << fileName << "\n";
 		}
 
 		glActiveTexture(0);
@@ -51,24 +52,18 @@ public:
 		glDeleteTextures(1, &this->id);
 	}
 
-	inline GLuint getID() const
+	inline GLuint getID() const { return this->id; }
+
+	void bind(const GLint texture_unit)
 	{
-		return this->id;
-	}
-	void bind()
-	{
-		glActiveTexture(GL_TEXTURE0 + this->textureUnit);
+		glActiveTexture(GL_TEXTURE0 + texture_unit);
 		glBindTexture(this->type, this->id);
 	}
+
 	void unbind()
 	{
 		glActiveTexture(0);
 		glBindTexture(this->type, 0);
-	}
-
-	inline GLint getTextureUnit() const
-	{
-		return this->textureUnit;
 	}
 
 	void loadFromFile(const char* fileName)
@@ -77,11 +72,11 @@ public:
 		{
 			glDeleteTextures(1, &this->id);
 		}
+
 		unsigned char* image = SOIL_load_image(fileName, &this->width, &this->height, NULL, SOIL_LOAD_RGBA);
 
-
 		glGenTextures(1, &this->id);
-		glBindTexture(type, this->id);
+		glBindTexture(this->type, this->id);
 
 		glTexParameteri(this->type, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(this->type, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -95,12 +90,11 @@ public:
 		}
 		else
 		{
-			std::cout << "ERROR::TEXTURE::LOADFROMFILE::TEXTURE_LOADING_FAILED" << std::endl;
+			std::cout << "ERROR::TEXTURE::LOADFROMFILE::TEXTURE_LOADING_FAILED: " << fileName << "\n";
 		}
 
 		glActiveTexture(0);
 		glBindTexture(this->type, 0);
 		SOIL_free_image_data(image);
 	}
-	
 };
