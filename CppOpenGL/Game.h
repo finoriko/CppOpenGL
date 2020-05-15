@@ -4,6 +4,11 @@
 
 //ZOOOOOOOOOOOM IN BEFORE RECORDING!
 
+//ENUMERATIONS
+enum shader_enum { SHADER_CORE_PROGRAM = 0 };
+enum texture_enum { TEX_PUSHEEN0 = 0,  TEX_CONTAINER1 };
+enum material_enum { MAT_1 = 0 };
+enum mesh_enum { MESH_QUAD = 0 };
 
 class Game
 {
@@ -30,6 +35,20 @@ private:
 	float fov;
 	float nearPlane;
 	float farPlane;
+
+	//Shaders
+	std::vector<Shader*> shaders;
+
+	//Textures
+	std::vector<Texture*> textures;
+
+	//Materials
+	std::vector<Material*> materials;
+
+	//Meshes
+	std::vector<Mesh*> meshes;
+
+
 	//Private functions
 	void initGLFW();
 	void initWindow(
@@ -39,6 +58,12 @@ private:
 	void initGLEW();
 	void initOpenGLOptions();
 	void initMatrices();
+
+	void initShaders();
+	void initTextures();
+	void initMaterials();
+	void initMeshes();
+
 	//Static variables
 
 public:

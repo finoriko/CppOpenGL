@@ -79,47 +79,8 @@ GLFWwindow* createWindow(
 
 int main()
 {
-	//Init GLFW
-	glfwInit();
+	Game game("C++ OpenGL", 640, 480, 4, 5, false);
 
-
-	const int GLmajorVersion = 4;
-	const int GLminorVersion = 4;
-	//Create Window
-	const int WINDOW_WIDTH = 640;
-	const int WINDOW_HEIGHT = 480;
-	int framebufferWidth = WINDOW_WIDTH;
-	int framebufferHeight = WINDOW_HEIGHT;
-
-
-
-	//init glew(needs window and opengl context
-	GLFWwindow* window = createWindow("CppOpenGL",WINDOW_WIDTH,WINDOW_HEIGHT,framebufferWidth,framebufferHeight, GLmajorVersion, GLminorVersion,false);
-	glewExperimental = GL_TRUE;
-
-	//Error
-	if (glewInit() != GLEW_OK)
-	{
-		std::cout << "GLEW FAILED" << std::endl;
-		glfwTerminate();
-	}
-
-	//Opengl Options
-	glEnable(GL_DEPTH_TEST);
-
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	//SHADER INIT
-	Shader core_program(GLmajorVersion,GLminorVersion,"vertex_core.glsl","fragment_core.glsl");
 	
 	//Model Mesh
 	Mesh test(&Quad(),
@@ -128,11 +89,6 @@ int main()
 		glm::vec3(1.f)
 		);
 
-	Texture texture_0("Images/pusheen.png", GL_TEXTURE_2D,0);
-
-
-	//Texture 1
-	Texture texture_1("Images/container.png",GL_TEXTURE_2D,1);
 	
 	//Material 0
 	Material material0(glm::vec3(0.1f), glm::vec3(1.f),glm::vec3(2.f), texture_0.getTextureUnit(), texture_1.getTextureUnit());

@@ -83,6 +83,33 @@ void Game::initMatrices()
 	);
 }
 
+void Game::initShaders()
+{
+	this->shaders.push_back(new Shader(this->GL_VERSION_MAJOR, this->GL_VERSION_MINOR,
+		"vertex_core.glsl", "fragment_core.glsl"));
+}
+
+void Game::initTextures()
+{
+
+	//TEXTURE 0
+	this->textures.push_back(new Texture("Images/pusheen.png", GL_TEXTURE_2D,0));
+
+	//TEXTURE 1
+	this->textures.push_back(new Texture("Images/container.png", GL_TEXTURE_2D,1));
+
+}
+
+void Game::initMaterials()
+{
+	this->materials.push_back(new Material(glm::vec3(0.1f), glm::vec3(1.f), glm::vec3(1.f),
+		this->textures[TEX_PUSHEEN0]->getTextureUnit(), this->textures[TEX_CONTAINER1]->getTextureUnit()));
+}
+
+void Game::initMeshes()
+{
+}
+
 //Constructors / Destructors
 Game::Game(
 	const char* title,
@@ -126,13 +153,27 @@ Game::Game(
 	this->initOpenGLOptions();
 
 	this->initMatrices();
+	this->initShaders();
+	this->initTextures();
+	this->initMaterials();
+	this->initMeshes();
 }
 
 Game::~Game()
 {
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
+	for (size_t i = 0; i < this->shaders.size(); i++)
+		delete this->shaders[i];
 
+	for (size_t i = 0; i < this->textures.size(); i++)
+		delete this->textures[i];
+
+	for (size_t i = 0; i < this->materials.size(); i++)
+		delete this->materials[i];
+
+	for (size_t i = 0; i < this->meshes.size(); i++)
+		delete this->meshes[i];
 	
 }
 int Game::getWindowShouldClose()
