@@ -48,7 +48,8 @@ private:
 	//Meshes
 	std::vector<Mesh*> meshes;
 
-
+	//Lights
+	std::vector<glm::vec3*> lights;
 	//Private functions
 	void initGLFW();
 	void initWindow(
@@ -63,7 +64,8 @@ private:
 	void initTextures();
 	void initMaterials();
 	void initMeshes();
-
+	void initLights();
+	void initUniforms();
 	//Static variables
 
 public:

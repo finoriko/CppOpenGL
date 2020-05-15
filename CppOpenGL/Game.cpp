@@ -66,7 +66,7 @@ void Game::initOpenGLOptions()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//Input
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Game::initMatrices()
@@ -108,8 +108,26 @@ void Game::initMaterials()
 
 void Game::initMeshes()
 {
+	this->meshes.push_back(new Mesh(&Quad(),
+		glm::vec3(0.f),
+		glm::vec3(0.f),
+		glm::vec3(1.f)
+	));
+}
+void Game::initLights()
+{
+	this->lights.push_back(new glm::vec3(0.f, 0.f, 1.f));
 }
 
+void Game::initUniforms()
+{
+	//INIT UNIFORMS
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ViewMatrix, "ViewMatrix");
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+
+	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(*this->lights[0], "lightPos0");
+	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->camPosition, "cameraPos");
+}
 //Constructors / Destructors
 Game::Game(
 	const char* title,
@@ -157,6 +175,8 @@ Game::Game(
 	this->initTextures();
 	this->initMaterials();
 	this->initMeshes();
+	this->initLights();
+	this->initUniforms();
 }
 
 Game::~Game()
@@ -174,7 +194,8 @@ Game::~Game()
 
 	for (size_t i = 0; i < this->meshes.size(); i++)
 		delete this->meshes[i];
-	
+	for (size_t i = 0; i < this->lights.size(); i++)
+		delete this->lights[i];
 }
 int Game::getWindowShouldClose()
 {
@@ -198,6 +219,11 @@ void Game::update()
 
 void Game::render()
 {
+	//UPDATE --- 
+	//updateInput(window);
+
+
+	//update
 	//Draw
 
 	//clear
@@ -205,14 +231,30 @@ void Game::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //ÃÊ±âÈ­
 
 	//use a program
+	//glUseProgram(core_program);
+	this->shaders[SHADER_CORE_PROGRAM]->set1i(this->textures[TEX_PUSHEEN0]->getTextureUnit(), "texture0");
+	this->shaders[SHADER_CORE_PROGRAM]->set1i(this->textures[TEX_CONTAINER1]->getTextureUnit(), "texture1");
+	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
 
-	//update framebuffer size and projection matrix
+	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
+	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
 
-	//use a program
+	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+
+	this->shaders[SHADER_CORE_PROGRAM]->use();
 
 	//Activate texture
+	/*glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture0);*/
+	this->textures[TEX_PUSHEEN0]->bind();
+	this->textures[TEX_CONTAINER1]->bind();
+	//Bind vertex array object
 
 	//draw
+	this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
 
 	//end draw
 	glfwSwapBuffers(window);

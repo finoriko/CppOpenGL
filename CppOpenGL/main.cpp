@@ -82,98 +82,21 @@ int main()
 	Game game("C++ OpenGL", 640, 480, 4, 5, false);
 
 	
-	//Model Mesh
-	Mesh test(&Quad(),
-		glm::vec3(0.f),
-		glm::vec3(0.f),
-		glm::vec3(1.f)
-		);
-
-	
 	//Material 0
-	Material material0(glm::vec3(0.1f), glm::vec3(1.f),glm::vec3(2.f), texture_0.getTextureUnit(), texture_1.getTextureUnit());
 
 	
-	glm::vec3 camPosition(0.f,0.f,1.f);
-	glm::vec3 worldUp(0.f, 1.f, 0.f);
-	glm::vec3 camFront(0.f, 0.f, -1.f);
-
-	glm::mat4 ViewMatrix(1.f);
-	ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
-
-	float fov = 90.f;
-	float nearPlane = 0.1f;
-	float farPlane = 1000.f;
-	glm::mat4 ProjectionMatrix(1.f);
-
-	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight,nearPlane,farPlane );
 
 	//Lights
-	glm::vec3 lightPos0(0.f, 0.f, 1.f);
-
-	//init uniforms
-	core_program.setMat4fv(ViewMatrix, "ViewMatrix");
-	core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
-
-	core_program.setVec3f(lightPos0, "lightPos0");
-	core_program.setVec3f(camPosition, "cameraPos");
-
-	glUseProgram(0);
 
 	//MAIN LOOP
-	while (!glfwWindowShouldClose(window))
+	while (!game.getWindowShouldClose())
 	{
 		//Update Input
-		glfwPollEvents();
-		updateInput(window, test);
+		game.update();
+		game.render();
 
-
-		//update
-		updateInput(window);
-		//Draw
-
-		//clear
-		glClearColor(0.f, 0.f, 0.f, 1.f); // 색 넣기
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //초기화
-
-		//use a program
-		//glUseProgram(core_program);
-		core_program.set1i(texture_0.getTextureUnit(), "texture0");
-		core_program.set1i(texture_1.getTextureUnit(), "texture1");
-		material0.sendToShader(core_program);
-
-		//glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-		glfwGetFramebufferSize(window,&framebufferWidth,&framebufferHeight);
-
-		ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-
-		core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
-		//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-		core_program.use();
-
-		//Activate texture
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture0);*/
-		texture_0.bind();
-		texture_1.bind();
-		//Bind vertex array object
-
-		//draw
-		test.render(&core_program);
-
-		//end draw
-		glfwSwapBuffers(window);
-		glFlush();
-
-		glBindVertexArray(0);
-		glUseProgram(0);
-		glActiveTexture(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	//End of program
-	glfwDestroyWindow(window);
-	glfwTerminate();
 
 
 
