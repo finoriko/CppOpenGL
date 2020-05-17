@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial14_PrimitiveClass",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial15_ModifyWindow", "Tutorial15_ModifyWindow\Tutorial15_ModifyWindow.vcxproj", "{99A45115-FE54-42B4-A6F3-47637DF5E2C6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial16_GameClass", "Tutorial16_GameClass\Tutorial16_GameClass.vcxproj", "{01E3F735-09E7-425C-9494-6B198739A091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,6 +173,14 @@ Global
 		{99A45115-FE54-42B4-A6F3-47637DF5E2C6}.Release|x64.Build.0 = Release|x64
 		{99A45115-FE54-42B4-A6F3-47637DF5E2C6}.Release|x86.ActiveCfg = Release|Win32
 		{99A45115-FE54-42B4-A6F3-47637DF5E2C6}.Release|x86.Build.0 = Release|Win32
+		{01E3F735-09E7-425C-9494-6B198739A091}.Debug|x64.ActiveCfg = Debug|x64
+		{01E3F735-09E7-425C-9494-6B198739A091}.Debug|x64.Build.0 = Debug|x64
+		{01E3F735-09E7-425C-9494-6B198739A091}.Debug|x86.ActiveCfg = Debug|Win32
+		{01E3F735-09E7-425C-9494-6B198739A091}.Debug|x86.Build.0 = Debug|Win32
+		{01E3F735-09E7-425C-9494-6B198739A091}.Release|x64.ActiveCfg = Release|x64
+		{01E3F735-09E7-425C-9494-6B198739A091}.Release|x64.Build.0 = Release|x64
+		{01E3F735-09E7-425C-9494-6B198739A091}.Release|x86.ActiveCfg = Release|Win32
+		{01E3F735-09E7-425C-9494-6B198739A091}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
