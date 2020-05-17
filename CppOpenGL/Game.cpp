@@ -93,10 +93,10 @@ void Game::initTextures()
 {
 
 	//TEXTURE 0
-	this->textures.push_back(new Texture("Images/pusheen.png", GL_TEXTURE_2D,0));
+	this->textures.push_back(new Texture("Images/pusheen.png", GL_TEXTURE_2D));
 
 	//TEXTURE 1
-	this->textures.push_back(new Texture("Images/container.png", GL_TEXTURE_2D,1));
+	this->textures.push_back(new Texture("Images/container.png", GL_TEXTURE_2D));
 
 }
 
@@ -113,6 +113,14 @@ void Game::initMeshes()
 		glm::vec3(0.f),
 		glm::vec3(1.f)
 	));
+	this->meshes.push_back(
+		new Mesh(
+			&Quad(),
+			glm::vec3(0.f),
+			glm::vec3(0.f),
+			glm::vec3(1.f)
+		)
+	);
 }
 void Game::initLights()
 {
@@ -130,24 +138,14 @@ void Game::initUniforms()
 }
 void Game::updateUniforms()
 {
-	//Update view matrix (camera)
-	this->ViewMatrix = this->camera.getViewMatrix();
+	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
 
-	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(this->ViewMatrix, "ViewMatrix");
-	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(this->camera.getPosition(), "cameraPos");
-	this->shaders[SHADER_CORE_PROGRAM]->setVec3f(*this->lights[0], "lightPos0");
-
-	//Update framebuffer size and projection matrix
 	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
 
-	this->ProjectionMatrix = glm::perspective(
-		glm::radians(this->fov),
-		static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
-		this->nearPlane,
-		this->farPlane
-	);
+	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
-	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(this->ProjectionMatrix, "ProjectionMatrix");
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+	
 }
 
 //Constructors / Destructors
@@ -237,6 +235,8 @@ void Game::update()
 {
 	//Update Input
 	glfwPollEvents();
+	Game::updateInput(this->window);
+	Game::updateInput(this->window, *this->meshes[MESH_QUAD]);
 }
 
 void Game::render()
@@ -254,16 +254,12 @@ void Game::render()
 
 	//use a program
 	//glUseProgram(core_program);
-	this->shaders[SHADER_CORE_PROGRAM]->set1i(0, "texture0");
-	this->shaders[SHADER_CORE_PROGRAM]->set1i(1, "texture1");
-	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
+	//this->shaders[SHADER_CORE_PROGRAM]->set1i(0, "texture0");
+	//this->shaders[SHADER_CORE_PROGRAM]->set1i(1, "texture1");
+	
+	this->updateUniforms();
 
-	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
-
-	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-
-	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+	//this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
 	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
 
 	this->shaders[SHADER_CORE_PROGRAM]->use();
@@ -271,12 +267,17 @@ void Game::render()
 	//Activate texture
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture0);*/
-	this->textures[TEX_PUSHEEN0]->bind();
-	this->textures[TEX_CONTAINER1]->bind();
+	this->textures[TEX_PUSHEEN0]->bind(0);
+	this->textures[TEX_CONTAINER1]->bind(1);
 	//Bind vertex array object
 
 	//draw
 	this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
+
+	this->textures[TEX_PUSHEEN0]->bind(1);
+	this->textures[TEX_CONTAINER1]->bind(0);
+
+	this->meshes[1]->render(this->shaders[SHADER_CORE_PROGRAM]);
 
 	//end draw
 	glfwSwapBuffers(window);
@@ -294,16 +295,16 @@ void Game::render()
 void Game::framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH)
 {
 	glViewport(0, 0, fbW, fbH);
-};
-void updateInput(GLFWwindow* window) //Å°ÀÔ·Â esc¸¦ ´©¸£¸é ²¨Áü
+}
+void Game::updateInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
-}
+};
 
-void updateInput(GLFWwindow* window, Mesh& mesh)
+void Game::updateInput(GLFWwindow* window, Mesh& mesh)
 {
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
