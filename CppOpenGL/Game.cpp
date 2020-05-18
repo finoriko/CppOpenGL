@@ -94,9 +94,11 @@ void Game::initTextures()
 
 	//TEXTURE 0
 	this->textures.push_back(new Texture("Images/pusheen.png", GL_TEXTURE_2D));
+	this->textures.push_back(new Texture("Images/pusheen_specular.png", GL_TEXTURE_2D));
 
 	//TEXTURE 1
 	this->textures.push_back(new Texture("Images/container.png", GL_TEXTURE_2D));
+	this->textures.push_back(new Texture("Images/container_specular.png", GL_TEXTURE_2D));
 
 }
 
@@ -267,17 +269,17 @@ void Game::render()
 	//Activate texture
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture0);*/
-	this->textures[TEX_PUSHEEN0]->bind(0);
-	this->textures[TEX_CONTAINER1]->bind(1);
-	//Bind vertex array object
+	//this->textures[TEX_PUSHEEN]->bind(0);
+	//this->textures[TEX_PUSHEEN_SPECULAR]->bind(1);
+	////Bind vertex array object
 
-	//draw
+	////draw
+	//this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
+
+	this->textures[TEX_CONTAINER]->bind(0);
+	this->textures[TEX_CONTAINER_SPECULAR]->bind(1);
+
 	this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
-
-	this->textures[TEX_PUSHEEN0]->bind(1);
-	this->textures[TEX_CONTAINER1]->bind(0);
-
-	this->meshes[1]->render(this->shaders[SHADER_CORE_PROGRAM]);
 
 	//end draw
 	glfwSwapBuffers(window);
@@ -321,6 +323,14 @@ void Game::updateInput(GLFWwindow* window, Mesh& mesh)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		mesh.move(glm::vec3(0.01f, 0.f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(0.f, 0.01f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+	{
+		mesh.move(glm::vec3(0.f, -0.01f, 0.0f));
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
