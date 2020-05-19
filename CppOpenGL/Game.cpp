@@ -110,7 +110,7 @@ void Game::initMaterials()
 
 void Game::initMeshes()
 {
-	this->meshes.push_back(new Mesh(&Quad(),
+	this->meshes.push_back(new Mesh(&Pyramid(),
 		glm::vec3(0.f),
 		glm::vec3(0.f),
 		glm::vec3(1.f)
