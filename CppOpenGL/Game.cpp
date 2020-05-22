@@ -140,13 +140,22 @@ void Game::initUniforms()
 }
 void Game::updateUniforms()
 {
-	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
+	//update view matrix(camera)
+	this->ViewMatrix = glm::lookAt(this->camPosition, this->camPosition + this->camFront, this->worldUp);
+
+	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ViewMatrix, "ViewMatrix");
 
 	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
 
-	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
+	ProjectionMatrix = glm::perspective(
+		glm::radians(fov),
+		static_cast<float>(framebufferWidth) / framebufferHeight,
+		nearPlane,
+		farPlane
+	);
 
 	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+
 	
 }
 
@@ -233,12 +242,47 @@ void Game::setWindowShouldClose()
 
 
 
+void Game::updateInput()
+{
+	//Program
+	if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(this->window, GLFW_TRUE);
+	}
+	//Cameara
+	if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		this->camPosition.z -= 0.05f;
+	}
+	if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		this->camPosition.z += 0.05f;
+	}
+	if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		this->camPosition.x -= 0.05f;
+	}
+	if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		this->camPosition.x += 0.05f;
+	}
+	if (glfwGetKey(this->window, GLFW_KEY_C) == GLFW_PRESS)
+	{
+		this->camPosition.y -= 0.05f;
+	}
+	if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		this->camPosition.y += 0.05f;
+	}
+}
+
 void Game::update()
 {
 	//Update Input
 	glfwPollEvents();
-	Game::updateInput(this->window);
-	Game::updateInput(this->window, *this->meshes[MESH_QUAD]);
+	this->updateInput();
+	/*Game::updateInput(this->window);
+	Game::updateInput(this->window, *this->meshes[MESH_QUAD]);*/
 }
 
 void Game::render()
@@ -260,6 +304,8 @@ void Game::render()
 	//this->shaders[SHADER_CORE_PROGRAM]->set1i(1, "texture1");
 	
 	this->updateUniforms();
+
+	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
 
 	//this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
 	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
@@ -298,54 +344,54 @@ void Game::framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH)
 {
 	glViewport(0, 0, fbW, fbH);
 }
-void Game::updateInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-	}
-};
-
-void Game::updateInput(GLFWwindow* window, Mesh& mesh)
-{
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(0.f, 0.f, -0.01f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(0.f, 0.f, 0.01f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(-0.01f, 0.f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(0.01f, 0.f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(0.f, 0.01f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-	{
-		mesh.move(glm::vec3(0.f, -0.01f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-	{
-		mesh.rotate(glm::vec3(0.f, -1.f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-	{
-		mesh.rotate(glm::vec3(0.f, 1.f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-	{
-		mesh.scaleUp(glm::vec3(1.f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-	{
-		mesh.scaleUp(glm::vec3(-1.f));
-	}
-}
+//void Game::updateInput(GLFWwindow* window)
+//{
+//	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+//	{
+//		glfwSetWindowShouldClose(window, GLFW_TRUE);
+//	}
+//};
+//
+//void Game::updateInput(GLFWwindow* window, Mesh& mesh)
+//{
+//	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(0.f, 0.f, -0.01f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(0.f, 0.f, 0.01f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(-0.01f, 0.f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(0.01f, 0.f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(0.f, 0.01f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+//	{
+//		mesh.move(glm::vec3(0.f, -0.01f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+//	{
+//		mesh.rotate(glm::vec3(0.f, -1.f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+//	{
+//		mesh.rotate(glm::vec3(0.f, 1.f, 0.0f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+//	{
+//		mesh.scaleUp(glm::vec3(1.f));
+//	}
+//	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+//	{
+//		mesh.scaleUp(glm::vec3(-1.f));
+//	}
+//}

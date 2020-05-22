@@ -6,7 +6,7 @@
 
 //ENUMERATIONS
 enum shader_enum { SHADER_CORE_PROGRAM = 0 };
-enum texture_enum { TEX_PUSHEEN = 0,TEX_PUSHEEN_SPECULAR,  TEX_CONTAINER,TEX_CONTAINER_SPECULAR };
+enum texture_enum { TEX_PUSHEEN = 0, TEX_PUSHEEN_SPECULAR, TEX_CONTAINER, TEX_CONTAINER_SPECULAR };
 enum material_enum { MAT_1 = 0 };
 enum mesh_enum { MESH_QUAD = 0 };
 
@@ -82,15 +82,15 @@ public:
 	int getWindowShouldClose();
 	//Modifiers
 	void setWindowShouldClose();
-	
+
 
 	//Functions
+	void updateInput();
 	void update();
 	void render();
-	
+
 
 	//Static functions
 	static void framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH);
-	void updateInput(GLFWwindow* window);
-	void updateInput(GLFWwindow* window,Mesh &mesh);
+
 };
