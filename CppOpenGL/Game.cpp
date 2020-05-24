@@ -66,7 +66,7 @@ void Game::initOpenGLOptions()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//Input
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Game::initMatrices()
@@ -188,6 +188,18 @@ Game::Game(
 	this->nearPlane = 0.1f;
 	this->farPlane = 1000.f;
 
+	this->dt = 0.f;
+	this->curTime = 0.f;
+	this->lastTime = 0.f;
+
+	this->lastMouseX = 0.0;
+	this->lastMouseY = 0.0;
+	this->mouseX = 0.0;
+	this->mouseY = 0.0;
+	this->mouseOffsetX = 0.0;
+	this->mouseOffsetY = 0.0;
+	this->firstMouse = true;
+
 	this->ProjectionMatrix = glm::mat4(1.f);
 	this->ProjectionMatrix = glm::perspective(
 		glm::radians(this->fov),
@@ -242,7 +254,37 @@ void Game::setWindowShouldClose()
 
 
 
-void Game::updateInput()
+void Game::updateDT()
+{
+	this->curTime = static_cast<float>(glfwGetTime());
+	this->dt = this->curTime - this->lastTime;
+	this->lastTime = this->curTime;
+
+	std::cout << "DT: " << this->dt << std::endl << "Mouse OffsetX:" << this->mouseOffsetX << std::endl<<"Mouse OffsetY:"
+		<<this->mouseOffsetY<<std::endl;
+}
+
+void Game::updateMouseInput()
+{
+	glfwGetCursorPos(this->window, &this->mouseX, &this->mouseY);
+
+	if (this->firstMouse)
+	{
+		this->lastMouseX = this->mouseX;
+		this->lastMouseY = this->mouseY;
+		this->firstMouse = false;
+	}
+
+	//Calc offset
+	this->mouseOffsetX = this->mouseX - this->lastMouseX;
+	this->mouseOffsetY = this->lastMouseY - this->mouseY;
+
+	//Set last X and Y
+	this->lastMouseX = this->mouseX;
+	this->lastMouseY = this->mouseY;
+}
+
+void Game::updateKeyboardInput()
 {
 	//Program
 	if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -276,13 +318,19 @@ void Game::updateInput()
 	}
 }
 
+void Game::updateInput()
+{
+	glfwPollEvents();
+
+	this->updateKeyboardInput();
+	this->updateMouseInput();
+}
+
 void Game::update()
 {
 	//Update Input
-	glfwPollEvents();
+	this->updateDT();
 	this->updateInput();
-	/*Game::updateInput(this->window);
-	Game::updateInput(this->window, *this->meshes[MESH_QUAD]);*/
 }
 
 void Game::render()
@@ -344,54 +392,3 @@ void Game::framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH)
 {
 	glViewport(0, 0, fbW, fbH);
 }
-//void Game::updateInput(GLFWwindow* window)
-//{
-//	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-//	{
-//		glfwSetWindowShouldClose(window, GLFW_TRUE);
-//	}
-//};
-//
-//void Game::updateInput(GLFWwindow* window, Mesh& mesh)
-//{
-//	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(0.f, 0.f, -0.01f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(0.f, 0.f, 0.01f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(-0.01f, 0.f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(0.01f, 0.f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(0.f, 0.01f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-//	{
-//		mesh.move(glm::vec3(0.f, -0.01f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-//	{
-//		mesh.rotate(glm::vec3(0.f, -1.f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-//	{
-//		mesh.rotate(glm::vec3(0.f, 1.f, 0.0f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-//	{
-//		mesh.scaleUp(glm::vec3(1.f));
-//	}
-//	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-//	{
-//		mesh.scaleUp(glm::vec3(-1.f));
-//	}
-//}
