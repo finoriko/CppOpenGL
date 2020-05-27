@@ -10,6 +10,8 @@
 #include<mat4x4.hpp>
 #include<gtc/matrix_transform.hpp>
 
+enum direction { FORWARD = 0, BACKWARD, LEFT, RIGHT };
+
 class Camera
 {
 private:
@@ -76,10 +78,37 @@ public:
 	void updateKeyboardInput(const float& dt, const int direction)
 	{
 		//Update position Vector
+		switch (direction)
+		{
+		case FORWARD:
+			this->position += this->front * this->movementSpeed * dt;
+			break;
+		case BACKWARD:
+			this->position -= this->front * this->movementSpeed * dt;
+			break;
+		case LEFT:
+			this->position -= this->right * this->movementSpeed * dt;
+			break;
+		case RIGHT:
+			this->position += this->right * this->movementSpeed * dt;
+			break;
+		default:
+			break;
+		}
 	}
 	void updateMouseInput(const float& dt, const double& offsetX, const double& offsetY)
 	{
 		//Update pitch yaw and roll
+		this->pitch += static_cast<GLfloat>(offsetY) * this->sensitivity * dt;
+		this->yaw += static_cast<GLfloat>(offsetX) * this->sensitivity * dt;
+
+		if (this->pitch > 80.f)
+			this->pitch = 80.f;
+		else if (this->pitch < -80.f)
+			this->pitch = -80.f;
+
+		if (this->yaw > 360.f || this->yaw < -360.f)
+			this->yaw = 0.f;
 	}
 	void updateInput(const float& dt, const int direction, const double& offsetX, const double& offsetY)
 	{
