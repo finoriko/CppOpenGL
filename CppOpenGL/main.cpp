@@ -8,7 +8,7 @@
 
 int main()
 {
-	Game game("C++ OpenGL", 640, 480, 4, 5, false);
+	Game game("C++ OpenGL", 1920, 1080, 4, 5, false);
 
 	
 	//Material 0

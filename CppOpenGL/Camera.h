@@ -75,9 +75,30 @@ public:
 	}
 
 	//Functions
-	void updateKeyboardInput(const float& dt, const int direction)
+	//void updateKeyboardInput(const float& dt, const int direction)
+	//{
+	//	//Update position Vector
+	//	switch (direction)
+	//	{
+	//	case FORWARD:
+	//		this->position += this->front * this->movementSpeed * dt;
+	//		break;
+	//	case BACKWARD:
+	//		this->position -= this->front * this->movementSpeed * dt;
+	//		break;
+	//	case LEFT:
+	//		this->position -= this->right * this->movementSpeed * dt;
+	//		break;
+	//	case RIGHT:
+	//		this->position += this->right * this->movementSpeed * dt;
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
+	void move(const float& dt, const int direction)
 	{
-		//Update position Vector
+		//Update position vector
 		switch (direction)
 		{
 		case FORWARD:
@@ -96,6 +117,7 @@ public:
 			break;
 		}
 	}
+
 	void updateMouseInput(const float& dt, const double& offsetX, const double& offsetY)
 	{
 		//Update pitch yaw and roll
@@ -112,7 +134,7 @@ public:
 	}
 	void updateInput(const float& dt, const int direction, const double& offsetX, const double& offsetY)
 	{
-		this->updateKeyboardInput(dt, direction);
+		//this->updateKeyboardInput(dt, direction);
 		this->updateMouseInput(dt, offsetX, offsetY);
 	}
 };

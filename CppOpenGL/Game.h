@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libs.h"
-
+#include "Camera.h"
 //ZOOOOOOOOOOOM IN BEFORE RECORDING!
 
 //ENUMERATIONS
@@ -38,6 +38,9 @@ private:
 	double mouseOffsetX;
 	double mouseOffsetY;
 	bool firstMouse;
+
+	//Camera
+	Camera camera;
 
 	//Matrices
 	glm::mat4 ViewMatrix;

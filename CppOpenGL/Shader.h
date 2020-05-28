@@ -51,7 +51,7 @@ private:
 			"0";
 		src.replace(src.find("#version"), 12, ("#version " + versionNr)); //두번 쨰 버전 뒤에 공백 중요
 		//std::cout << src.replace(src.find("#version"), 12,("#version"+ versionNr)) << std::endl;
-		std::cout << src << std::endl;
+		//std::cout << src << std::endl;
 		return src;
 	}
 
