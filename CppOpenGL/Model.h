@@ -39,16 +39,13 @@ public:
 		}
 	}
 
-	//OBJ file loaded model
-	
-
 	~Model()
 	{
 		for (auto*& i : this->meshes)
 			delete i;
 	}
 
-	
+	//Functions
 	void update()
 	{
 
@@ -62,17 +59,15 @@ public:
 		//Update uniforms
 		this->material->sendToShader(*shader);
 
-		//Use a program (BECAUSE SHADER CLASS LAST UNIFORM UPDATE UNUSES IT)
+		//Use a program
 		shader->use();
-		//Activate texture for each mesh
+
+		//Activate texture
 		this->overrideTextureDiffuse->bind(0);
 		this->overrideTextureSpecular->bind(1);
+
 		//Draw
 		for (auto& i : this->meshes)
-		{
-		
-
-			i->render(shader); //Activates shader also
-		}
+			i->render(shader);
 	}
 };

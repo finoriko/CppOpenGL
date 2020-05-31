@@ -132,7 +132,7 @@ void Game::initModels()
 		this->textures[TEX_CONTAINER],
 		this->textures[TEX_CONTAINER_SPECULAR],
 		this->meshes
-		)
+	)
 	);
 }
 void Game::initLights()
@@ -376,7 +376,7 @@ void Game::render()
 	this->updateUniforms();
 
 	//Render Models
-	this->meshes[0]->render(this->shaders[SHADER_CORE_PROGRAM]);
+	this->models[0]->render(this->shaders[SHADER_CORE_PROGRAM]);
 
 	//end draw
 	glfwSwapBuffers(window);
