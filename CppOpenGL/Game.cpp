@@ -108,7 +108,8 @@ void Game::initMaterials()
 		0, 1));
 }
 
-void Game::initMeshes()
+
+void Game::initModels()
 {
 	this->meshes.push_back(new Mesh(&Pyramid(),
 		glm::vec3(0.f),
@@ -123,9 +124,6 @@ void Game::initMeshes()
 			glm::vec3(1.f)
 		)
 	);
-}
-void Game::initModels()
-{
 	this->models.push_back(new Model(
 		glm::vec3(0.f),
 		this->materials[0],
@@ -134,6 +132,12 @@ void Game::initModels()
 		this->meshes
 	)
 	);
+
+	for (auto*& i : meshes)
+		delete i;
+
+	this->meshes.clear();
+	
 }
 void Game::initLights()
 {
@@ -230,7 +234,6 @@ Game::Game(
 	this->initShaders();
 	this->initTextures();
 	this->initMaterials();
-	this->initMeshes();
 	this->initModels();
 	this->initLights();
 	this->initUniforms();
@@ -352,7 +355,7 @@ void Game::update()
 	this->updateDT();
 	this->updateInput();
 
-	//this->meshes[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
+	this->models[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
 }
 
 void Game::render()
