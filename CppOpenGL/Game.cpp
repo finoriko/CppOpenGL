@@ -124,6 +124,17 @@ void Game::initMeshes()
 		)
 	);
 }
+void Game::initModels()
+{
+	this->models.push_back(new Model(
+		glm::vec3(0.f),
+		this->materials[0],
+		this->textures[TEX_CONTAINER],
+		this->textures[TEX_CONTAINER_SPECULAR],
+		this->meshes
+		)
+	);
+}
 void Game::initLights()
 {
 	this->lights.push_back(new glm::vec3(0.f, 0.f, 1.f));
@@ -220,6 +231,7 @@ Game::Game(
 	this->initTextures();
 	this->initMaterials();
 	this->initMeshes();
+	this->initModels();
 	this->initLights();
 	this->initUniforms();
 }
@@ -239,6 +251,10 @@ Game::~Game()
 
 	for (size_t i = 0; i < this->meshes.size(); i++)
 		delete this->meshes[i];
+
+	for (auto*& i : this->models)
+		delete i;
+
 	for (size_t i = 0; i < this->lights.size(); i++)
 		delete this->lights[i];
 }
@@ -336,7 +352,7 @@ void Game::update()
 	this->updateDT();
 	this->updateInput();
 
-	this->meshes[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
+	//this->meshes[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
 }
 
 void Game::render()
@@ -359,27 +375,8 @@ void Game::render()
 	
 	this->updateUniforms();
 
-	this->materials[MAT_1]->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
-
-	//this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
-	//glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-	this->shaders[SHADER_CORE_PROGRAM]->use();
-
-	//Activate texture
-	/*glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture0);*/
-	//this->textures[TEX_PUSHEEN]->bind(0);
-	//this->textures[TEX_PUSHEEN_SPECULAR]->bind(1);
-	////Bind vertex array object
-
-	////draw
-	//this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
-
-	this->textures[TEX_CONTAINER]->bind(0);
-	this->textures[TEX_CONTAINER_SPECULAR]->bind(1);
-
-	this->meshes[MESH_QUAD]->render(this->shaders[SHADER_CORE_PROGRAM]);
+	//Render Models
+	this->meshes[0]->render(this->shaders[SHADER_CORE_PROGRAM]);
 
 	//end draw
 	glfwSwapBuffers(window);
