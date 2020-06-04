@@ -104,10 +104,15 @@ void Game::initTextures()
 
 void Game::initMaterials()
 {
-	this->materials.push_back(new Material(glm::vec3(0.1f), glm::vec3(1.f), glm::vec3(1.f),
+	this->materials.push_back(new Material(glm::vec3(0.1f), glm::vec3(1.f), glm::vec3(2.f),
 		0, 1));
 }
 
+void Game::initOBJModels()
+{
+	std::vector<Vertex> temp;
+	temp = loadOBJ(""); //TO DO obj load
+}
 
 void Game::initModels()
 {
@@ -281,6 +286,7 @@ Game::Game(
 	this->initShaders();
 	this->initTextures();
 	this->initMaterials();
+	this->initOBJModels();
 	this->initModels();
 	this->initLights();
 	this->initUniforms();
@@ -399,9 +405,9 @@ void Game::update()
 	this->updateDT();
 	this->updateInput();
 
-	this->models[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
+	/*this->models[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
 	this->models[1]->rotate(glm::vec3(0.f, 1.f, 0.f));
-	this->models[2]->rotate(glm::vec3(0.f, 1.f, 0.f));
+	this->models[2]->rotate(glm::vec3(0.f, 1.f, 0.f));*/
 }
 
 void Game::render()
