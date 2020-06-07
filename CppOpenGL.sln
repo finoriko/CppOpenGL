@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial21_Camera", "Tutori
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial22_Model", "Tutorial22_Model\Tutorial22_Model.vcxproj", "{D5E8B7A1-A8DE-4F28-A885-C3F16D0D21E7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial23_LoadOBJ", "Tutorial23_LoadOBJ\Tutorial23_LoadOBJ.vcxproj", "{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -241,6 +243,14 @@ Global
 		{D5E8B7A1-A8DE-4F28-A885-C3F16D0D21E7}.Release|x64.Build.0 = Release|x64
 		{D5E8B7A1-A8DE-4F28-A885-C3F16D0D21E7}.Release|x86.ActiveCfg = Release|Win32
 		{D5E8B7A1-A8DE-4F28-A885-C3F16D0D21E7}.Release|x86.Build.0 = Release|Win32
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Debug|x64.ActiveCfg = Debug|x64
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Debug|x64.Build.0 = Debug|x64
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Debug|x86.ActiveCfg = Debug|Win32
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Debug|x86.Build.0 = Debug|Win32
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Release|x64.ActiveCfg = Release|x64
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Release|x64.Build.0 = Release|x64
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Release|x86.ActiveCfg = Release|Win32
+		{0A9AE2A5-60C6-4801-976B-66F2AB5C67E2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
