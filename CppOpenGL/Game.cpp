@@ -110,19 +110,18 @@ void Game::initMaterials()
 
 void Game::initOBJModels()
 {
-	std::vector<Vertex> temp;
-	temp = loadOBJ(""); //TO DO obj load
+	//std::vector<Vertex> temp;
+	//temp = loadOBJ(""); //TO DO obj load
 }
 
 void Game::initModels()
 {
 	std::vector<Mesh*>meshes;
-	//std::vector<Mesh*>meshes2;
 
 	meshes.push_back(
 		new Mesh(
 			&Pyramid(),
-			glm::vec3(1.f,0.f,0.f),
+			glm::vec3(1.f, 0.f, 0.f),
 			glm::vec3(0.f),
 			glm::vec3(0.f),
 			glm::vec3(1.f)
@@ -139,15 +138,7 @@ void Game::initModels()
 		)
 	);
 
-	/*meshes2.push_back(
-		new Mesh(
-			&Quad(),
-			glm::vec3(0.f, 0.f, 0.f),
-			glm::vec3(0.f),
-			glm::vec3(-90.f, 0.f, 0.f),
-			glm::vec3(100.f)
-		)
-	);*/
+	
 
 	this->models.push_back(new Model(
 		glm::vec3(0.f),
@@ -176,20 +167,21 @@ void Game::initModels()
 	)
 	);
 
-	/*this->models.push_back(new Model(
-		glm::vec3(2.f, -5.f, 2.f),
+	
+
+	this->models.push_back(new Model(
+		glm::vec3(4.f, 0.f, 4.f),
 		this->materials[0],
 		this->textures[TEX_CONTAINER],
 		this->textures[TEX_CONTAINER_SPECULAR],
-		meshes2
+		"OBJFiles/ddh.obj"
 	)
-	);*/
+	);
 
 	for (auto*& i : meshes)
 		delete i;
 
-	/*for (auto*& i : meshes2)
-		delete i;*/
+
 }
 void Game::initLights()
 {
