@@ -73,7 +73,10 @@ public:
 
 		return this->ViewMatrix;
 	}
-
+	const glm::vec3 getPosition() const
+	{
+		return this->position;
+	}
 	//Functions
 	//void updateKeyboardInput(const float& dt, const int direction)
 	//{
