@@ -95,7 +95,7 @@ public:
 		//Update uniforms
 		this->material->sendToShader(*shader);
 
-		//Use a program
+		//Use a program(because shader class last uniform update unused it)
 		shader->use();
 
 		
