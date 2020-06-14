@@ -31,7 +31,6 @@ uniform PointLight pointLight
 uniform vec3 lightPos0;
 uniform vec3 cameraPos;
 
-
 //Fuctions
 vec3 calculateAmbient(Material material)
 {

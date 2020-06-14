@@ -98,8 +98,6 @@ public:
 		//Use a program(because shader class last uniform update unused it)
 		shader->use();
 
-		
-
 		//Draw
 		for (auto& i : this->meshes)
 		{
